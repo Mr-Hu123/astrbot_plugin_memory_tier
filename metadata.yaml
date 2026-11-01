@@ -4,7 +4,7 @@ short_desc: 把长期记忆拆成「画像 / 摘要 / 日记」三层，只注�
 desc: |
   分层的长期记忆插件：画像（profile）常驻注入、滚动摘要（summary）次之、每日三行日记按天注入，
   历史正文交给 AstrBot 自带的上下文压缩。所有记忆都是纯文本文件，可读、可手改、可用 git 备份。
-version: v1.0.0
+version: 1.0.0
 author: Mr-Hu123
 repo: https://github.com/Mr-Hu123/astrbot_plugin_memory_tier
 tags:
