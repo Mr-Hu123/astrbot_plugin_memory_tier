@@ -1,0 +1,128 @@
+{
+  "enabled": {
+    "type": "bool",
+    "description": "启用分层记忆",
+    "default": true,
+    "hint": "插件总开关。关闭后不再注入记忆，命令也不响应。"
+  },
+  "inject": {
+    "type": "object",
+    "description": "注入设置",
+    "items": {
+      "enabled": {
+        "type": "bool",
+        "description": "每轮注入记忆摘要",
+        "default": true,
+        "hint": "在系统提示词里插入「关于他 / 最近 / 日记」三块。关闭后只有命令能用。"
+      },
+      "position": {
+        "type": "string",
+        "description": "插入位置",
+        "default": "before",
+        "options": ["before", "after"],
+        "hint": "before：放在人格之前；after：接在人格之后。人格里有「硬规则」时建议 before。"
+      },
+      "max_chars": {
+        "type": "int",
+        "description": "注入内容总字数上限",
+        "default": 700,
+        "hint": "中文约 1.6 字/token，700 字约 430 token。超出会按「日记 → 摘要 → 画像」顺序截断。"
+      },
+      "include_profile": {
+        "type": "bool",
+        "description": "注入画像",
+        "default": true,
+        "hint": "画像是最稳定的一层，一般不要关。"
+      },
+      "profile_max_lines": {
+        "type": "int",
+        "description": "画像最多注入多少行",
+        "default": 12,
+        "hint": "画像文件可以写很多行，但只注入前 N 行，避免膨胀。"
+      },
+      "summary_enabled": {
+        "type": "bool",
+        "description": "注入滚动摘要",
+        "default": true,
+        "hint": "summary.md 里放「最近在忙什么」这类中期记忆，由 /总结 维护。"
+      },
+      "diary_days": {
+        "type": "int",
+        "description": "注入最近几天的日记",
+        "default": 1,
+        "hint": "0 = 不注入日记；1 = 只注入最近一天；2 = 前两天。每条日记建议 3 行以内。"
+      }
+    }
+  },
+  "storage": {
+    "type": "object",
+    "description": "存储设置",
+    "items": {
+      "scope": {
+        "type": "string",
+        "description": "记忆隔离范围",
+        "default": "per_user",
+        "options": ["per_user", "global"],
+        "hint": "per_user：每个 QQ / 会话各自一份记忆；global：所有会话共用一份。"
+      },
+      "recent_cache": {
+        "type": "int",
+        "description": "缓存最近多少条消息用于 /总结",
+        "default": 40,
+        "hint": "只存在内存里，不落盘、不注入。设 0 则 /总结 不可用。"
+      }
+    }
+  },
+  "commands": {
+    "type": "object",
+    "description": "命令设置",
+    "items": {
+      "enabled": {
+        "type": "bool",
+        "description": "启用记忆命令",
+        "default": true
+      },
+      "admin_only": {
+        "type": "bool",
+        "description": "仅管理员可用",
+        "default": false,
+        "hint": "开启后只有 AstrBot 管理员（admins_id）能读写记忆。"
+      },
+      "allow_delete": {
+        "type": "bool",
+        "description": "允许 /忘掉 删除画像条目",
+        "default": true
+      }
+    }
+  },
+  "summarize": {
+    "type": "object",
+    "description": "自动整理设置",
+    "items": {
+      "enabled": {
+        "type": "bool",
+        "description": "允许调用模型整理记忆",
+        "default": true,
+        "hint": "关闭后 /总结 与 /画像 不可用，只能手写 /记住 和 /记下。"
+      },
+      "diary_prompt": {
+        "type": "text",
+        "description": "写日记的提示词",
+        "default": "把下面这段对话压成日记，最多三行，第一人称，只写发生了什么和情绪变化，不要复述原句，不要加标题和标点结尾：",
+        "hint": "留空使用内置默认值。"
+      },
+      "profile_prompt": {
+        "type": "text",
+        "description": "写画像的提示词",
+        "default": "根据下面的日记，提炼这个人的稳定特征，最多 8 行，每行一个短句，格式为「- 特征」。只写有证据的，不要猜：",
+        "hint": "留空使用内置默认值。"
+      },
+      "max_output_chars": {
+        "type": "int",
+        "description": "整理结果字数上限",
+        "default": 300,
+        "hint": "超出部分会被丢弃，防止一次整理写太长。"
+      }
+    }
+  }
+}
